@@ -1,6 +1,8 @@
-use std::collections::LinkedList;
+#![allow(unused)]
 
+use std::collections::LinkedList;
 use serde::Deserialize;
+
 
 #[derive(Debug)]
 pub struct Thread {

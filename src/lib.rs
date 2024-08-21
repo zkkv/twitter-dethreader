@@ -1,7 +1,7 @@
 mod network;
 mod structs;
 
-use std::{collections::LinkedList, error::Error, io};
+use std::{collections::LinkedList, error::Error};
 use structs::Thread;
 
 pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), Box<dyn Error>> {
