@@ -1,10 +1,10 @@
 mod network;
 mod structs;
 
-use std::{collections::LinkedList, error::Error};
+use std::{collections::LinkedList, error::Error, path::Path};
 use structs::Thread;
 
-pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), Box<dyn Error>> {
+pub fn run(tweet_id: &str, destination_dir: &Path) -> Result<(), Box<dyn Error>> {
 	let thread = unwrap(tweet_id)?;
 
 	let mut buffer = String::from("# ");
@@ -31,7 +31,8 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 	Ok(Thread::new(tweets))
 }
 
-fn write_to_file(buffer: &str, destination_dir: &str) -> Result<(), std::io::Error> {
-	std::fs::write(format!("{destination_dir}/out.md"), buffer)?;
+fn write_to_file(buffer: &str, destination_dir: &Path) -> Result<(), std::io::Error> {
+	let dest = destination_dir.join("out.md");
+	std::fs::write(dest, buffer)?;
 	Ok(())
 }
