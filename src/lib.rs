@@ -13,7 +13,7 @@ pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), Box<dyn Error>> 
 		buffer = format!("{}{}\n\n", buffer, &tweet.text);
 	}
 
-	std::fs::write(destination_dir, buffer)?;
+	write_to_file(&buffer, &destination_dir)?;
 
 	Ok(())
 }
@@ -29,4 +29,9 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 	tweets.push_front(tweet);
 
 	Ok(Thread::new(tweets))
+}
+
+fn write_to_file(buffer: &str, destination_dir: &str) -> Result<(), std::io::Error> {
+	std::fs::write(format!("{destination_dir}/out.md"), buffer)?;
+	Ok(())
 }
