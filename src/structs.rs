@@ -11,6 +11,10 @@ impl Thread {
 	pub fn new(tweets: LinkedList<Tweet>) -> Self {
 		Self {tweets}
 	}
+
+	pub fn tweets(&self) -> &LinkedList<Tweet> {
+		&self.tweets
+	}
 }
 
 #[derive(Debug, Deserialize)]

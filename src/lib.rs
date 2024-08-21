@@ -7,7 +7,13 @@ use structs::Thread;
 pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), reqwest::Error> {
 	let thread = unwrap(tweet_id)?;
 
-	println!("{:?}", thread);
+	let mut buffer = String::new();
+
+	for tweet in thread.tweets().iter() {
+		buffer += &tweet.text;
+	}
+
+	println!("{}", buffer);
 
 	Ok(())
 }
