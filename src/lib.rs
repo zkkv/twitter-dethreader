@@ -1,10 +1,10 @@
 mod network;
 mod structs;
 
-use std::collections::LinkedList;
+use std::{collections::LinkedList, error::Error, io};
 use structs::Thread;
 
-pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), reqwest::Error> {
+pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), Box<dyn Error>> {
 	let thread = unwrap(tweet_id)?;
 
 	let mut buffer = String::new();
@@ -13,7 +13,7 @@ pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), reqwest::Error> 
 		buffer += &tweet.text;
 	}
 
-	println!("{}", buffer);
+	std::fs::write(destination_dir, buffer)?;
 
 	Ok(())
 }
