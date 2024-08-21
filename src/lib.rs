@@ -7,10 +7,10 @@ use structs::Thread;
 pub fn run(tweet_id: &str, destination_dir: &str) -> Result<(), Box<dyn Error>> {
 	let thread = unwrap(tweet_id)?;
 
-	let mut buffer = String::new();
+	let mut buffer = String::from("# ");
 
 	for tweet in thread.tweets().iter() {
-		buffer += &tweet.text;
+		buffer = format!("{}{}\n\n", buffer, &tweet.text);
 	}
 
 	std::fs::write(destination_dir, buffer)?;
