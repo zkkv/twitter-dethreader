@@ -11,5 +11,8 @@ fn main() {
 	let tweet_id = &args[1];
 	let destination_dir = &args[2];
 
-	twitter_dethreader::run(tweet_id, destination_dir);
+	if let Err(error) = twitter_dethreader::run(tweet_id, destination_dir) {
+		eprintln!("Error during execution: {}", error);
+		process::exit(1);
+	}
 }

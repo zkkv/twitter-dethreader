@@ -14,12 +14,12 @@ pub fn fetch_tweet(tweet_id: &str) -> Result<Tweet, reqwest::Error> {
 	let mut headers = HeaderMap::new();
 	headers.insert("User-Agent", HeaderValue::from_static(USER_AGENT));
 
-	let res = Client::new()
+	let response = Client::new()
 		.get(URL)
 		.query(&params)
 		.headers(headers)
 		.send()?;
 
-	let tweet: Tweet = res.json()?;
+	let tweet: Tweet = response.json()?;
 	Ok(tweet)
 }
