@@ -1,8 +1,37 @@
 use std::{collections::HashMap, env};
-use reqwest::{blocking::{get, Client, RequestBuilder}, header::{HeaderMap, HeaderValue}};
+use reqwest::{blocking::Client, header::{HeaderMap, HeaderValue}};
+use serde::Deserialize;
 
 const URL: &str = "https://cdn.syndication.twimg.com/tweet-result";
 const USER_AGENT: &str = "curl/8.6.0";
+
+#[derive(Debug)]
+struct Thread {
+	tweets: Vec<Tweet>,
+	author: Author,
+}
+
+#[derive(Debug, Deserialize)]
+struct Tweet {
+	#[serde(rename = "id_str")]
+	id: String,
+	text: String,
+	parent: Option<ParentTweet>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ParentTweet {
+	#[serde(rename = "id_str")]
+	id: String
+}
+
+#[derive(Debug, Deserialize)]
+struct Author {
+	id: String,
+	name: String,
+	handle: String,
+	profile_img_url: String,
+}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -25,6 +54,6 @@ fn main() {
 		.send()
 		.expect("Couldn't get a response");
 
-	let body = res.text().unwrap();
+	let body: Tweet = res.json().unwrap();
 	println!("{:?}", body);
 }
