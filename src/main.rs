@@ -1,7 +1,7 @@
 use twitter_dethreader::options::Options;
 
 use std::{path::PathBuf, process};
-use clap::{command, Arg};
+use clap::{command, Arg, ArgAction};
 
 fn main() {
 	let command = parse_args();
@@ -22,21 +22,26 @@ fn parse_args() -> Command {
 			Arg::new("output")
 				.short('o')
 				.long("output")
-				.help("Help message")
+				.help("Specify output file (prints to stdout if not specified)")
+		)
+		.arg(
+			Arg::new("title")
+				.short('T')
+				.long("title")
+				.action(ArgAction::SetTrue)
+				.help("Make the first tweet into an H1 heading")
 		)
 		.get_matches();
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
 	
-	let output = PathBuf::new()
-		.join(matches
-		.get_one::<String>("output")
+	let output = PathBuf::from(matches.get_one::<String>("output")
 		.unwrap_or(&String::from(".")));
-
-	println!("Output: {:?}", output);
+	let has_title = matches.get_flag("title");
 
 	let options = Options {
 		output,
+		has_title,
 	};
 
 	Command {tweet_id, options}

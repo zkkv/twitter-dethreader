@@ -29,7 +29,11 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 }
 
 fn format_thread(thread: &Thread, options: &Options) -> String {
-	let mut buffer = String::from("# ");
+	let mut buffer = String::new();
+	
+	if options.has_title {
+		buffer += "# ";
+	}
 
 	for tweet in thread.tweets().iter() {
 		buffer = format!("{}{}\n\n", buffer, &tweet.text);
