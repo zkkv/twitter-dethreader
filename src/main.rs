@@ -36,6 +36,13 @@ fn parse_args() -> Command {
 				.action(ArgAction::SetTrue)
 				.help("Make the first tweet into an H1 heading")
 		)
+		.arg(
+			Arg::new("delimiter")
+				.short('d')
+				.long("delimiter")
+				.action(ArgAction::SetTrue)
+				.help("Add horizontal lines between each tweet")
+		)
 		.get_matches();
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
@@ -45,10 +52,12 @@ fn parse_args() -> Command {
 		None => None
 	};
 	let has_title = matches.get_flag("title");
+	let has_delimiters = matches.get_flag("delimiter");
 
 	let options = Options {
 		output,
 		has_title,
+		has_delimiters,
 	};
 
 	Command {tweet_id, options}

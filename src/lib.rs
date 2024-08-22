@@ -37,6 +37,9 @@ fn format_thread(thread: &Thread, options: &Options) -> String {
 
 	for tweet in thread.tweets().iter() {
 		buffer = format!("{}{}\n\n", buffer, &tweet.text);
+		if options.has_delimiters {
+			buffer += "---\n\n";
+		}
 	}
 
 	buffer
