@@ -1,18 +1,48 @@
-use std::{env, path::Path, process};
+use twitter_dethreader::options::Options;
+
+use std::{path::PathBuf, process};
+use clap::{command, Arg};
 
 fn main() {
-	let args: Vec<String> = env::args().collect();
+	let command = parse_args();
 
-	if args.len() != 3 {
-		eprintln!("Include tweet id followed by destination directory");
-		process::exit(1);
-	}
-
-	let tweet_id = &args[1];
-	let destination_dir = Path::new(&args[2]);
-
-	if let Err(error) = twitter_dethreader::run(tweet_id, destination_dir) {
+	if let Err(error) = twitter_dethreader::run(&command.tweet_id, &command.options) {
 		eprintln!("Error during execution: {}", error);
 		process::exit(1);
 	}
+}
+
+fn parse_args() -> Command {
+	let matches = command!()
+		.arg(
+			Arg::new("tweet-id")
+				.required(true)
+		)
+		.arg(
+			Arg::new("output")
+				.short('o')
+				.long("output")
+				.help("Help message")
+		)
+		.get_matches();
+
+	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
+	
+	let output = PathBuf::new()
+		.join(matches
+		.get_one::<String>("output")
+		.unwrap_or(&String::from(".")));
+
+	println!("Output: {:?}", output);
+
+	let options = Options {
+		output,
+	};
+
+	Command {tweet_id, options}
+}
+
+struct Command<> {
+	tweet_id: String,
+	options: Options,
 }

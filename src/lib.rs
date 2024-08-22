@@ -1,10 +1,14 @@
 mod network;
 mod structs;
+pub mod options;
+
+use structs::Thread;
+use options::Options;
 
 use std::{collections::LinkedList, error::Error, path::Path};
-use structs::Thread;
 
-pub fn run(tweet_id: &str, destination_dir: &Path) -> Result<(), Box<dyn Error>> {
+
+pub fn run(tweet_id: &str, options: &Options) -> Result<(), Box<dyn Error>> {
 	let thread = unwrap(tweet_id)?;
 
 	let mut buffer = String::from("# ");
@@ -13,7 +17,7 @@ pub fn run(tweet_id: &str, destination_dir: &Path) -> Result<(), Box<dyn Error>>
 		buffer = format!("{}{}\n\n", buffer, &tweet.text);
 	}
 
-	write_to_file(&buffer, &destination_dir)?;
+	write_to_file(&buffer, &options.output)?;
 
 	Ok(())
 }
@@ -31,8 +35,9 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 	Ok(Thread::new(tweets))
 }
 
-fn write_to_file(buffer: &str, destination_dir: &Path) -> Result<(), std::io::Error> {
-	let dest = destination_dir.join("out.md");
+fn write_to_file(buffer: &str, destination: &Path) -> Result<(), std::io::Error> {
+	let dest = destination.join("out.md");
+	println!("Destination: {:?}", dest);
 	std::fs::write(dest, buffer)?;
 	Ok(())
 }
