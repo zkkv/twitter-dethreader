@@ -8,6 +8,7 @@ fn main() {
 
 	if let Err(error) = twitter_dethreader::run(&command.tweet_id, &command.options) {
 		eprintln!("Error during execution: {}", error);
+		eprintln!("If it's a network error, it's possible that Twitter has changed something!");
 		process::exit(1);
 	}
 }
