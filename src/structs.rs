@@ -27,6 +27,7 @@ pub struct Tweet {
 	pub parent: Option<ParentTweet>,
 	#[serde(rename = "user")]
 	pub author: Author,
+	pub photos: Option<Vec<Photo>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -44,4 +45,9 @@ pub struct Author {
 	pub handle: String,
 	#[serde(rename = "profile_image_url_https", default)]
 	pub profile_img_url: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Photo {
+	pub url: String,
 }

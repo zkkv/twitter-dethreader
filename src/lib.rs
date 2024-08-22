@@ -61,6 +61,12 @@ fn format_thread(thread: &Thread, options: &Options) -> String {
 		}
 
 		buffer += "\n\n";
+
+		if let Some(photos) = &tweet.photos {
+			for (photo_idx, photo) in photos.iter().enumerate() {
+				buffer += &format!("[Photo {}]({})\n\n", photo_idx + 1, photo.url);
+			}
+		}
 		
 		if options.has_delimiters && idx != size {
 			buffer += "---\n\n";
