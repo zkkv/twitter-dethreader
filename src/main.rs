@@ -14,12 +14,17 @@ fn main() {
 
 fn parse_args() -> Command {
 	let matches = command!()
+		.name("Twitter Dethreader")
+		.about("Converts twitter threads into markdown")
+		.author("zkkv")
+		.disable_version_flag(true)
 		.arg(
 			Arg::new("tweet-id")
 				.required(true)
+				.help("Id of the last tweet in the thread. It can be found in the URL after status.")
 		)
 		.arg(
-			Arg::new("output")
+			Arg::new("file")
 				.short('o')
 				.long("output")
 				.help("Specify output file (prints to stdout if not specified)")
@@ -35,7 +40,7 @@ fn parse_args() -> Command {
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
 	
-	let output = PathBuf::from(matches.get_one::<String>("output")
+	let output = PathBuf::from(matches.get_one::<String>("file")
 		.unwrap_or(&String::from(".")));
 	let has_title = matches.get_flag("title");
 
