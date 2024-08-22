@@ -49,70 +49,70 @@ fn format_thread(thread: &Thread, options: &Options) -> String {
 	}
 
 	for (idx, tweet) in thread.tweets().iter().enumerate() {
-		buffer = format_tweet(tweet, idx, size, buffer, options);
+		format_tweet(tweet, idx, size, &mut buffer, options);
 	}
 
 	buffer
 }
 
-fn format_tweet(tweet: &Tweet, idx: usize, size: usize, mut buffer: String, options: &Options) -> String {
+fn format_tweet(tweet: &Tweet, idx: usize, size: usize, mut buffer: &mut String, options: &Options) {
 	let idx = idx + 1;
 	if options.has_large_index && !(idx == 1 && options.has_title) {
-		buffer += &format!("## [{idx}/{size}]\n\n");
+		*buffer += &format!("## [{idx}/{size}]\n\n");
 	}
 
-	buffer += &tweet.text;
+	*buffer += &tweet.text;
 
 	if options.has_small_index {
-		buffer += &format!(" --[{idx}/{size}]");
+		*buffer += &format!(" --[{idx}/{size}]");
 	}
 
-	buffer += "\n\n";
+	*buffer += "\n\n";
 
-	for url_entity in tweet.entities.urls.iter() {
-		buffer += &format!("{}\n\n", &url_entity.url);
-	}
+	format_tweet_media(tweet, &mut buffer);
 
 	if let Some(quoted_tweet) = &tweet.quoted_tweet {
-		buffer = format_quoted_tweet(quoted_tweet, buffer);
-	}
-
-	if let Some(photos) = &tweet.photos {
-		for (photo_idx, photo) in photos.iter().enumerate() {
-			buffer += &format!("[Photo {}]({})\n\n", photo_idx + 1, photo.url);
-		}
-	}
-
-	if let Some(video) = &tweet.video {
-		buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
+		format_quoted_tweet(quoted_tweet, &mut buffer);
 	}
 	
 	if options.has_delimiters && idx != size {
-		buffer += "---\n\n";
+		*buffer += "---\n\n";
 	}
-
-	// I decided to take ownership and return it so that I could use concatenation on buffer
-	buffer
 }
 
-fn format_quoted_tweet(tweet: &QuotedTweet, mut buffer: String) -> String {
-	buffer += &format!("> {}\n\n", tweet.text);
+fn format_tweet_media(tweet: &Tweet, buffer: &mut String) {
+	for url_entity in tweet.entities.urls.iter() {
+			*buffer += &format!("{}\n\n", &url_entity.url);
+		}
+
+	if let Some(photos) = &tweet.photos {
+			for (photo_idx, photo) in photos.iter().enumerate() {
+				*buffer += &format!("[Photo {}]({})\n\n", photo_idx + 1, photo.url);
+			}
+		}
+
+	if let Some(video) = &tweet.video {
+			*buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
+		}
+}
+
+// Ideally, this should be refactored because it's almost the same code as in format_tweet
+fn format_quoted_tweet(tweet: &QuotedTweet, buffer: &mut String) {
+	*buffer += &format!("> {}\n\n", tweet.text);
 
 	for url_entity in tweet.entities.urls.iter() {
-		buffer += &format!("> {}\n\n", &url_entity.url);
+		*buffer += &format!("> {}\n\n", &url_entity.url);
 	}
 
 	if let Some(photos) = &tweet.photos {
 		for (photo_idx, photo) in photos.iter().enumerate() {
-			buffer += &format!("> [Quoted photo {}]({})\n\n", photo_idx + 1, photo.url);
+			*buffer += &format!("> [Quoted photo {}]({})\n\n", photo_idx + 1, photo.url);
 		}
 	}
 
 	if let Some(video) = &tweet.video {
-		buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
+		*buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
 	}
-	
-	buffer
 }
 
 fn write_to_file(string: &str, destination: &Option<PathBuf>) -> Result<(), std::io::Error> {
