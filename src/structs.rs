@@ -29,6 +29,7 @@ pub struct Tweet {
 	pub author: Author,
 	pub photos: Option<Vec<Photo>>,
 	pub quoted_tweet: Option<QuotedTweet>,
+	pub entities: Entities,
 }
 
 #[derive(Debug, Deserialize)]
@@ -45,7 +46,8 @@ pub struct QuotedTweet {
 	pub text: String,
 	#[serde(rename = "user")]
 	pub author: Author,
-	pub photos: Option<Vec<Photo>>
+	pub photos: Option<Vec<Photo>>,
+	pub entities: Entities,
 }
 
 #[derive(Debug, Deserialize)]
@@ -61,5 +63,16 @@ pub struct Author {
 
 #[derive(Debug, Deserialize)]
 pub struct Photo {
+	pub url: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Entities {
+	pub urls: Vec<UrlEntity>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct UrlEntity {
+	#[serde(rename = "expanded_url")]
 	pub url: String,
 }

@@ -69,6 +69,10 @@ fn format_tweet(tweet: &Tweet, idx: usize, size: usize, mut buffer: String, opti
 
 	buffer += "\n\n";
 
+	for url_entity in tweet.entities.urls.iter() {
+		buffer += &format!("{}\n\n", &url_entity.url);
+	}
+
 	if let Some(quoted_tweet) = &tweet.quoted_tweet {
 		buffer = format_quoted_tweet(quoted_tweet, buffer);
 	}
@@ -89,6 +93,10 @@ fn format_tweet(tweet: &Tweet, idx: usize, size: usize, mut buffer: String, opti
 
 fn format_quoted_tweet(tweet: &QuotedTweet, mut buffer: String) -> String {
 	buffer += &format!("> {}\n\n", tweet.text);
+
+	for url_entity in tweet.entities.urls.iter() {
+		buffer += &format!("> {}\n\n", &url_entity.url);
+	}
 
 	if let Some(photos) = &tweet.photos {
 		for (photo_idx, photo) in photos.iter().enumerate() {
