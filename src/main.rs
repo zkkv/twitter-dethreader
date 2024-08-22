@@ -15,7 +15,7 @@ fn main() {
 fn parse_args() -> Command {
 	let matches = command!()
 		.name("Twitter Dethreader")
-		.about("Converts twitter threads into markdown")
+		.about("Converts Twitter threads into markdown format")
 		.author("zkkv")
 		.disable_version_flag(true)
 		.arg(
