@@ -43,6 +43,20 @@ fn parse_args() -> Command {
 				.action(ArgAction::SetTrue)
 				.help("Add horizontal lines between each tweet")
 		)
+		.arg(
+			Arg::new("small-index")
+				.short('i')
+				.long("small-index")
+				.action(ArgAction::SetTrue)
+				.help("End each tweet with plaintext containing its index (position)")
+		)
+		.arg(
+			Arg::new("large-index")
+				.short('I')
+				.long("large-index")
+				.action(ArgAction::SetTrue)
+				.help("Start each tweet with a subheading containing its index (position)")
+		)
 		.get_matches();
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
@@ -53,11 +67,15 @@ fn parse_args() -> Command {
 	};
 	let has_title = matches.get_flag("title");
 	let has_delimiters = matches.get_flag("delimiter");
+	let has_small_index = matches.get_flag("small-index");
+	let has_large_index = matches.get_flag("large-index");
 
 	let options = Options {
 		output,
 		has_title,
 		has_delimiters,
+		has_small_index,
+		has_large_index,
 	};
 
 	Command {tweet_id, options}

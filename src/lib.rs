@@ -30,14 +30,27 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 
 fn format_thread(thread: &Thread, options: &Options) -> String {
 	let mut buffer = String::new();
+	let size = thread.tweets().len();
 	
 	if options.has_title {
 		buffer += "# ";
 	}
 
-	for tweet in thread.tweets().iter() {
-		buffer = format!("{}{}\n\n", buffer, &tweet.text);
-		if options.has_delimiters {
+	for (idx, tweet) in thread.tweets().iter().enumerate() {
+		let idx = idx + 1;
+		if options.has_large_index && !(idx == 1 && options.has_title) {
+			buffer += &format!("## [{idx}/{size}]\n\n");
+		}
+
+		buffer += &tweet.text;
+
+		if options.has_small_index {
+			buffer += &format!(" --[{idx}/{size}]");
+		}
+
+		buffer += "\n\n";
+		
+		if options.has_delimiters && idx != size {
 			buffer += "---\n\n";
 		}
 	}

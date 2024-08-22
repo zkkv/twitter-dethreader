@@ -4,4 +4,6 @@ pub struct Options {
 	pub output: Option<PathBuf>,
 	pub has_title: bool,
 	pub has_delimiters: bool,
+	pub has_small_index: bool,
+	pub has_large_index: bool,
 }
