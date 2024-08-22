@@ -28,12 +28,24 @@ pub struct Tweet {
 	#[serde(rename = "user")]
 	pub author: Author,
 	pub photos: Option<Vec<Photo>>,
+	pub quoted_tweet: Option<QuotedTweet>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct ParentTweet {
 	#[serde(rename = "id_str")]
 	pub id: String
+}
+
+
+#[derive(Debug, Deserialize)]
+pub struct QuotedTweet {
+	#[serde(rename = "id_str")]
+	pub id: String,
+	pub text: String,
+	#[serde(rename = "user")]
+	pub author: Author,
+	pub photos: Option<Vec<Photo>>
 }
 
 #[derive(Debug, Deserialize)]
