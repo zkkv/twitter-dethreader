@@ -5,7 +5,7 @@ pub mod options;
 use structs::Thread;
 use options::Options;
 
-use std::{collections::LinkedList, error::Error, path::Path};
+use std::{collections::LinkedList, error::Error, io::Write, path::PathBuf};
 
 
 pub fn run(tweet_id: &str, options: &Options) -> Result<(), Box<dyn Error>> {
@@ -42,8 +42,10 @@ fn format_thread(thread: &Thread, options: &Options) -> String {
 	buffer
 }
 
-fn write_to_file(string: &str, destination: &Path) -> Result<(), std::io::Error> {
-	let dest = destination.join("out.md");
-	std::fs::write(dest, string)?;
+fn write_to_file(string: &str, destination: &Option<PathBuf>) -> Result<(), std::io::Error> {
+	match destination {
+		Some(dest) => std::fs::write(dest, string)?,
+		None => std::io::stdout().write_all(string.as_bytes())?
+	}
 	Ok(())
 }

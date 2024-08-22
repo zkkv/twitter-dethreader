@@ -40,8 +40,10 @@ fn parse_args() -> Command {
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
 	
-	let output = PathBuf::from(matches.get_one::<String>("file")
-		.unwrap_or(&String::from(".")));
+	let output = match matches.get_one::<String>("file") {
+		Some(string) => Some(PathBuf::from(string)),
+		None => None
+	};
 	let has_title = matches.get_flag("title");
 
 	let options = Options {
