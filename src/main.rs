@@ -18,6 +18,7 @@ fn parse_args() -> Command {
 		.name("Twitter Dethreader")
 		.about("Converts Twitter threads into markdown format")
 		.author("zkkv")
+		.bin_name("cargo run --")
 		.disable_version_flag(true)
 		.arg(
 			Arg::new("tweet-id")
