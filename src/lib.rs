@@ -82,6 +82,10 @@ fn format_tweet(tweet: &Tweet, idx: usize, size: usize, mut buffer: String, opti
 			buffer += &format!("[Photo {}]({})\n\n", photo_idx + 1, photo.url);
 		}
 	}
+
+	if let Some(video) = &tweet.video {
+		buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
+	}
 	
 	if options.has_delimiters && idx != size {
 		buffer += "---\n\n";
@@ -102,6 +106,10 @@ fn format_quoted_tweet(tweet: &QuotedTweet, mut buffer: String) -> String {
 		for (photo_idx, photo) in photos.iter().enumerate() {
 			buffer += &format!("> [Quoted photo {}]({})\n\n", photo_idx + 1, photo.url);
 		}
+	}
+
+	if let Some(video) = &tweet.video {
+		buffer += &format!("[Video {}]({})\n\n", 1, video.variants.last().unwrap().url);
 	}
 	
 	buffer
