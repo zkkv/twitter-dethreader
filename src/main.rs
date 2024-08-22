@@ -57,6 +57,20 @@ fn parse_args() -> Command {
 				.action(ArgAction::SetTrue)
 				.help("Start each tweet with a subheading containing its index (position)")
 		)
+		.arg(
+			Arg::new("author")
+				.short('a')
+				.long("author")
+				.action(ArgAction::SetTrue)
+				.help("Include the thread author's name and handle")
+		)
+		.arg(
+			Arg::new("picture")
+				.short('p')
+				.long("picture")
+				.action(ArgAction::SetTrue)
+				.help("Include a link to the thread author's profile picture")
+		)
 		.get_matches();
 
 	let tweet_id = matches.get_one::<String>("tweet-id").unwrap().clone();
@@ -69,6 +83,8 @@ fn parse_args() -> Command {
 	let has_delimiters = matches.get_flag("delimiter");
 	let has_small_index = matches.get_flag("small-index");
 	let has_large_index = matches.get_flag("large-index");
+	let has_author = matches.get_flag("author");
+	let has_picture = matches.get_flag("picture");
 
 	let options = Options {
 		output,
@@ -76,6 +92,8 @@ fn parse_args() -> Command {
 		has_delimiters,
 		has_small_index,
 		has_large_index,
+		has_author,
+		has_picture,
 	};
 
 	Command {tweet_id, options}

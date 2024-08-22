@@ -31,6 +31,18 @@ fn unwrap(tweet_id: &str) -> Result<Thread, reqwest::Error> {
 fn format_thread(thread: &Thread, options: &Options) -> String {
 	let mut buffer = String::new();
 	let size = thread.tweets().len();
+
+	if options.has_picture {
+		// This should never panic because there's at least one tweet
+		let picture = &thread.tweets().front().unwrap().author.profile_img_url;
+		buffer += &format!("[Profile picture]({picture})\n\n");
+	}
+
+	if options.has_author {
+		let name = &thread.tweets().front().unwrap().author.name;
+		let handle = &thread.tweets().front().unwrap().author.handle;
+		buffer += &format!("Author: {name} (@{handle})\n\n");
+	}
 	
 	if options.has_title {
 		buffer += "# ";

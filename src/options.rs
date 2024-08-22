@@ -6,4 +6,6 @@ pub struct Options {
 	pub has_delimiters: bool,
 	pub has_small_index: bool,
 	pub has_large_index: bool,
+	pub has_author: bool,
+	pub has_picture: bool,
 }

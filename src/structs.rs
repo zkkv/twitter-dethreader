@@ -36,12 +36,12 @@ pub struct ParentTweet {
 }
 
 #[derive(Debug, Deserialize)]
-struct Author {
+pub struct Author {
 	#[serde(rename = "id_str")]
-	id: String,
-	name: String,
+	pub id: String,
+	pub name: String,
 	#[serde(rename = "screen_name")]
-	handle: String,
+	pub handle: String,
 	#[serde(rename = "profile_image_url_https", default)]
-	profile_img_url: String,
+	pub profile_img_url: String,
 }
