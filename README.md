@@ -29,5 +29,8 @@ This was developed mainly for two reasons:
 - When Twitter API stopped being free, all existing tools for unwrapping threads broke. I decided that I could make one myself and it can be free.
 - I wanted to practice Rust.
 
+## License
+This software is licensed under [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). All dependencies are licensed under their respective licenses.
+
 ## Developer
 Developed by zkkv, 08/2024
